@@ -19,6 +19,7 @@ struct expression {
 };
 
 //In C++, "operator" is a keyword...sigh
+//So we'll call this class template "operation"
 template <typename O>
 struct operation: expression {
     static expression::ptr make(expression::ptr lhs, expression::ptr rhs) {
@@ -94,22 +95,23 @@ expression::ptr parse(
         return top->first();
     }
 
-    if ('+' == args[arg_index][0]) {
+    const auto& arg = args[arg_index];
+    if ('+' == arg[0]) {
         return parse(args, arg_index + 1,
                 stack_node::make(
                     plus::make(top->second(), top->first()),
                     top->nextnext()));
-    } else if (('-' == args[arg_index][0]) and (1 == args[arg_index].size())) {
+    } else if (('-' == arg[0]) and (1 == arg.size())) {
         return parse(args, arg_index + 1,
                 stack_node::make(
                     minus::make(top->second(), top->first()),
                     top->nextnext()));
-    } else if (('x' == args[arg_index][0]) or ('*' == args[arg_index][0])) {
+    } else if (('x' == arg[0]) or ('*' == arg[0])) {
         return parse(args, arg_index + 1,
                 stack_node::make(
                     times::make(top->second(), top->first()),
                     top->nextnext()));
-    } else if ('/' == args[arg_index][0]) {
+    } else if ('/' == arg[0]) {
         return parse(args, arg_index + 1,
                 stack_node::make(
                     divided_by::make(top->second(), top->first()),
@@ -117,7 +119,7 @@ expression::ptr parse(
     } else {
         return parse(args, arg_index + 1,
                 stack_node::make(
-                    integer::make(std::stoi(args[arg_index])), top));
+                    integer::make(std::stoi(arg)), top));
     }
 }
 
@@ -127,9 +129,9 @@ int main(const int argc, const char** argv) {
 
         if (0 == args.size()) die("Need arguments!");
 
-        auto ep = parse(args, 0, nullptr);
+        const expression::ptr ep = parse(args, 0, nullptr);
 
-        auto result = ep->eval();
+        const int result = ep->eval();
 
 #ifndef BE_MORE_FUNCTIONAL
         std::cout << result << '\n';
