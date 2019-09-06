@@ -4,7 +4,7 @@ Functional Object-Oriented Programming
 
 ## What is it?
 
-This is a toy program to demonstrate that a program can be both Functional and Object-Oriented.
+This is a toy program to demonstrate that a program can be _both_ Functional _and_ Object-Oriented.
 
 ## What does it do?
 
@@ -38,16 +38,29 @@ For example:
 
 Note that division simply truncates any fractional part.
 
-If `foop` is compiled with `BE_MORE_FUNCTIONAL` defined, it will not print its results. Instead, you'll have to ask your shell to print the results for you.
+If _foop_ is compiled with `BE_MORE_FUNCTIONAL` defined, it will not print its results. Instead, you'll have to ask your shell to print the results for you.
 
 For example:
 
     $ foop 2 2 + ; echo $?
     4
 
-## Caveats
+## Why do you say it is Object-Oriented?
 
-There are two uses of the standard C++ iostreams which are certainly not Functional. Define `BE_MORE_FUNCTIONAL` when compiling in order to eliminate those.
+For me, the key feature of object-oriented programming is _polymorphism_.
 
-The C++ runtime and standard library that foop depends upon certainly do non-Functional things. But that is true of the runtime support for any Functional language running on non-Functional hardware.
+The `expression` class is an abstract base class that defines a pure virtual member function: `eval`. Subclasses of `expression` represent the operands and operators. These classes override the `eval` member function to implement their specific behavior.
 
+Now, I could say that Object-Oriented Programming is much more than this, but for the purposes of showing that a program can be _both_ Object-Oriented _and_ functional, I think this is enough.
+
+## Why do you say it is Functional?
+
+Functional Programming is programming with _pure_ functions.
+
+Pure functions do not change state, do not depend upon global state, have no side-effects, and always return the same result for the same arguments.
+
+With the exception of a couple of uses of C++ `iostreams`, all the code in this _foop_ is pure. If you define `BE_MORE_FUNCTIONAL` when compiling it, even those uses of `iostreams` will be removed. (Then you will need to have your shell print out the results.)
+
+The C++ runtime and standard library that _foop_ depends upon certainly do non-Functional things. But that is true of the runtime support for any Functional language running on non-Functional hardware.
+
+Now, I could say that Functional Programming is much more than this, but for the purposes of showing that a program can be _both_ Object-Oriented _and_ functional, I think this is enough.
